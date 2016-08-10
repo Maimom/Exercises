@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Soccer.Models.Player>
+﻿
+@model PagedList.IPagedList<Soccer.Models.Player>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -12,10 +14,11 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Team.Name)
+            @Html.ActionLink("Team Name", "Index", new { sortOrder ="Team Name"})
+           
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+           Name
         </th>
         <th></th>
     </tr>
@@ -29,11 +32,16 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PlayerId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PlayerId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PlayerId })
-        </td>
+            <span class="glyphicon glyphicon-edit">@Html.ActionLink("Edit", "Edit", new { id = item.PlayerId })</span>|
+            @Html.ActionLink("Details", "Details", new { id = item.PlayerId }) |
+            <span class="glyphicon glyphicon-remove-circle">@Html.ActionLink("Delete", "Delete", new { id = item.PlayerId })</span>
+</td>
     </tr>
 }
 
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page}))

@@ -10,6 +10,7 @@ namespace Soccer.Models
     {
         public int TeamId { get; set; }
         [Required]
+        [Display (Name ="Team Name")]
         public string Name { get; set; }
         public string City { get; set; }
         public DateTime Founded { get; set; }

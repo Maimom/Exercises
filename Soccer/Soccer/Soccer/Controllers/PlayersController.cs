@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Soccer.Models;
+using PagedList;
 
 namespace Soccer.Controllers
 {
@@ -15,10 +16,21 @@ namespace Soccer.Controllers
         private SoccerContext db = new SoccerContext();
 
         // GET: Players
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var players = db.Players.Include(p => p.Team);
-            return View(players.ToList());
+            //var sortorder = Request.QueryString["sortorder"];
+            //sortorder = string.IsNullOrEmpty(sortorder) ? "Team Name": "";
+       
+            var players = db.Players.Include(p => p.Team );
+
+
+            players = players.OrderBy(p => p.Name);
+
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(players.ToPagedList(pageNumber, pageSize));
+
+            //return View(players.ToList());
         }
 
         // GET: Players/Details/5
